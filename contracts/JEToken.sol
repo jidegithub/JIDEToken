@@ -3,18 +3,24 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract JIDEToken is ERC20 {
+contract JEToken is ERC20 {
 	address public owner;
 	string public constant token_name = 'Jide Ethereum Token';
   string public constant token_symbol = 'JET';
- // uint8 public constant decimals = 2;
+  uint8 private _decimals;
 
-	constructor(uint256 initialSupply) ERC20(token_name, token_symbol) {
+	constructor(uint256 initialSupply, uint8 decimals_) ERC20(token_name, token_symbol) {
 		owner = msg.sender;
+		_decimals = decimals_;
 		// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/6edb6dd1ca43d05a762d84c688116b3327f5e490/contracts/token/ERC20/ERC20.sol#L251-L261
     // increases `msg.sender`'s balance, total supply, and emits the `Transfer` event
+		// _mint(msg.sender, initialSupply* (10 ** uint256(_decimals)));
 		_mint(msg.sender, initialSupply);
 	}
+
+	function decimals() public view virtual override returns (uint8) {
+    return _decimals;
+  }
 
 	modifier onlyOwner() {
     // if (msg.sender == owner) _;
@@ -23,7 +29,7 @@ contract JIDEToken is ERC20 {
   }
 
 	function mint(address to, uint256 amount) public onlyOwner {
-		_mint(to, amount);
+		_mint(to, amount * (10 ** uint256(_decimals)));
 	}
 
 	function burn(uint256 amount) public {

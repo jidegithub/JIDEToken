@@ -1,3 +1,7 @@
 .env
 node_modules
 build
+
+JIDEToken_JIDEFaucet/contracts
+JIDEToken_JIDEFaucet/node_modules
+JIDEToken_JIDEFaucet/build
