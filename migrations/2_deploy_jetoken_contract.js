@@ -3,7 +3,7 @@ const JEToken = artifacts.require("JEToken");
 module.exports = function(deployer) {
   // Adjust supply as needed
   // const initialSupply = web3.utils.toWei('1000', 'ether');
-  const initialSupply = 200;
+  const initialSupply = 2000;
   const decimals = 3; // Custom decimal places
   // Deploy the JIDEToken contract as our only task
   deployer.deploy(JEToken, initialSupply, decimals);

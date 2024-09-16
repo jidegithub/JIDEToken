@@ -1,0 +1,43 @@
+These are useful commands to use in the Truffle console.
+
+//get Created Token contract address
+JEToken.address
+
+//create a variable account to store account list/array
+let accounts;
+
+//assign res to account variable
+web3.eth.getAccounts((err,res) => accounts = res)
+
+//access index item in account array/list
+accounts[0]
+
+//get total number pf token units in all accounts
+//give the result a Big Number(BN) but transformed to string with the toString method
+JEToken.deployed().then(instance => instance.totalSupply()).then(function(result) {console.log(result.toString())});
+
+// simple transfer command between accounts
+JEToken.deployed().then(instance => instance.transfer(accounts[1], 200))
+
+//balance of specific account. change account by changing index number here (accounts[0])
+JEToken.deployed().then(instance => instance.balanceOf(accounts[0])).then(function(result) {console.log(result.toString())});
+
+//another approach to get balance of specific account. 
+//change account by changing index number here (accounts[0])
+JEToken.deployed().then(instance => web3.eth.getAccounts().then(accounts => instance.balanceOf(accounts[0]))).then(result => console.log(result.toString()));
+
+//mint/create new token by passing the senders address/msg.sender/account that paid gas for contract creation and amount 100 in this case
+JEToken.deployed().then(instance => instance.mint('0x91556dc931596D981D4B768c4B8a347880551391', 100));
+
+
+When JEToken is deployed it will allocate all the JET
+to the account that created it, accounts[0]. Then, we call the
+approve function in JEToken to approve JETFaucet to send up to 1,000 JET
+on behalf of accounts[0]. Finally, to test our faucet, we call
+JETFaucet.withdraw from accounts[1] and try to withdraw 10
+JET. Here are the console commands:
+//withdraw from faucet to another account using the approve and transferFrom workflow
+
+1. JEToken.deployed().then(instance => { instance.approve(JETFaucet.address, 100200) })
+
+2. JETFaucet.deployed().then(instance => web3.eth.getAccounts().then(accounts => instance.withdraw(1000, {from: accounts[1]})));
